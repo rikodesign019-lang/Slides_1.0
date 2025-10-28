@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Upload Template PPT — Desa Silanga</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-8">
+  <h1 class="text-3xl font-bold text-center text-green-600 mb-10">🧩 Admin Panel - Template PPT</h1>
+
+  <!-- Grid dua kolom -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
+    
+    <!-- === KIRI: FORM UPLOAD === -->
+    <div class="bg-white shadow-lg rounded-2xl p-6">
+      <h2 class="text-2xl font-semibold text-green-700 mb-4 text-center">Upload Template Baru</h2>
+
+      <form id="uploadForm" class="space-y-4">
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Judul Template</label>
+          <input type="text" name="title" required class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500">
+        </div>
+
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Kode Template</label>
+          <input type="text" name="code" required placeholder="Misal: EDU001" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500">
+        </div>
+
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Universitas</label>
+          <input type="text" name="univ" required placeholder="Misal: Universitas Tadulako" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500">
+        </div>
+
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Tema</label>
+          <select name="theme" required class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500">
+            <option value="">Pilih Tema</option>
+            <option value="Pendidikan">Pendidikan</option>
+            <option value="Lingkungan">Lingkungan</option>
+            <option value="Teknologi">Teknologi</option>
+            <option value="Desa">Desa</option>
+            <option value="Kampus">Kampus</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">ID Video YouTube (Preview)</label>
+          <input type="text" name="youtube_id" required placeholder="Contoh: dQw4w9WgXcQ" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500">
+        </div>
+
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Link Download File</label>
+          <input type="url" name="download_link" required placeholder="https://drive.google.com/..." class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500">
+        </div>
+
+        <button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition">
+          Simpan ke Database
+        </button>
+      </form>
+
+      <p id="statusMsg" class="text-center mt-4 text-sm font-medium"></p>
+    </div>
+
+    <!-- === KANAN: DAFTAR TEMPLATE === -->
+    <div class="bg-white shadow-lg rounded-2xl p-6 flex flex-col">
+      <h2 class="text-2xl font-semibold text-green-700 mb-4 text-center">📚 Daftar Template</h2>
+
+      <!-- Search -->
+      <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Cari berdasarkan kode template..." 
+        class="border border-gray-300 rounded-lg p-2 mb-4 focus:ring-2 focus:ring-green-500"
+      >
+
+      <!-- Scrollable List -->
+      <div id="templateList" class="overflow-y-auto max-h-[500px] space-y-3 pr-1"></div>
+    </div>
+  </div>
+
+  <script>
+  const supabaseUrl = "https://kfqjrvfdjehrjthbtkzs.supabase.co";
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmcWpydmZkamVocmp0aGJ0a3pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2MDg3NzUsImV4cCI6MjA3NjE4NDc3NX0._94B2EbPFDsKtDn5egSEgwIwVZ3vaDMy-IEsAFyPOxU";
+  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+  const form = document.getElementById("uploadForm");
+  const statusMsg = document.getElementById("statusMsg");
+  const listContainer = document.getElementById("templateList");
+  const searchInput = document.getElementById("searchInput");
+
+  // === Fungsi bantu konversi link ===
+  function convertYouTubeLink(url) {
+    if (!url.includes("youtube.com") && !url.includes("youtu.be")) return url;
+    const id = url.includes("watch?v=")
+      ? url.split("watch?v=")[1].split("&")[0]
+      : url.split("/").pop();
+    return id; // kita hanya simpan ID (misal: dQw4w9WgXcQ)
+  }
+
+  function convertDriveLink(url) {
+  if (!url) return url;
+
+  // 📁 Link Google Drive biasa
+  if (url.includes("drive.google.com/file/d/")) {
+    const match = url.match(/\/d\/([^/]+)/);
+    return match ? `https://drive.google.com/uc?export=download&id=${match[1]}` : url;
+  }
+
+  // 🧾 Link Google Docs / Slides / Sheets (misal: docs.google.com/presentation/)
+  if (url.includes("docs.google.com/presentation/d/")) {
+    const match = url.match(/\/d\/([^/]+)/);
+    return match ? `https://docs.google.com/presentation/d/${match[1]}/export/pptx` : url;
+  }
+
+  if (url.includes("docs.google.com/document/d/")) {
+    const match = url.match(/\/d\/([^/]+)/);
+    return match ? `https://docs.google.com/document/d/${match[1]}/export/pdf` : url;
+  }
+
+  if (url.includes("docs.google.com/spreadsheets/d/")) {
+    const match = url.match(/\/d\/([^/]+)/);
+    return match ? `https://docs.google.com/spreadsheets/d/${match[1]}/export/xlsx` : url;
+  }
+
+  // kalau bukan drive/docs link, balikin apa adanya
+  return url;
+}
+
+
+// === Upload template ===
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  statusMsg.textContent = "⏳ Mengirim data...";
+  statusMsg.className = "text-blue-600 text-center mt-4";
+
+  const formData = Object.fromEntries(new FormData(form).entries());
+
+  // ✅ Konversi otomatis YouTube embed
+  formData.youtube_id = convertYouTubeLink(formData.youtube_id);
+
+  // ✅ Convert link Google Drive agar langsung download
+  formData.download_link = convertDriveLink(formData.download_link);
+
+  // ✅ Siapkan data yang akan dikirim (tanpa kolom tutorial)
+  const templateData = {
+    title: formData.title || "",
+    code: formData.code || "",
+    univ: formData.univ || "",
+    theme: formData.theme || "",
+    youtube_id: formData.youtube_id || "",
+    download_link: formData.download_link || "",
+    created_at: new Date(),
+  };
+
+  const { error } = await supabaseClient.from("templates_ppt").insert([templateData]);
+
+  if (error) {
+    statusMsg.textContent = "❌ Gagal mengunggah: " + error.message;
+    statusMsg.className = "text-red-600 text-center mt-4";
+  } else {
+    statusMsg.textContent = "✅ Template berhasil diunggah!";
+    statusMsg.className = "text-green-600 text-center mt-4";
+    form.reset();
+    loadTemplates();
+  }
+});
+
+  // === Load & tampilkan template ===
+  async function loadTemplates(filter = "") {
+    let query = supabaseClient.from("templates_ppt").select("*").order("created_at", { ascending: false });
+    if (filter) query = query.ilike("code", `%${filter}%`);
+
+    const { data, error } = await query;
+    if (error) {
+      listContainer.innerHTML = "<p class='text-red-500 text-center'>❌ Gagal memuat data.</p>";
+      return;
+    }
+
+    if (data.length === 0) {
+      listContainer.innerHTML = "<p class='text-gray-500 text-center'>Belum ada template ditemukan.</p>";
+      return;
+    }
+
+    listContainer.innerHTML = data.map(t => `
+      <div class="border border-gray-200 rounded-xl p-4 shadow-sm flex items-center justify-between hover:shadow-md transition">
+        <div class="flex items-center space-x-4">
+          <iframe width="140" height="80" class="rounded-lg" src="https://www.youtube.com/embed/${t.youtube_id}" frameborder="0" allowfullscreen></iframe>
+          <div>
+            <p class="font-semibold text-gray-800">${t.title}</p>
+            <p class="text-sm text-gray-600">${t.univ} — <span class="font-mono">${t.code}</span></p>
+            <p class="text-xs text-gray-400">Tema: ${t.theme}</p>
+          </div>
+        </div>
+        <button onclick="deleteTemplate('${t.id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm">Hapus</button>
+      </div>
+    `).join("");
+  }
+
+  // === Fungsi hapus ===
+  async function deleteTemplate(id) {
+    if (!confirm("Yakin ingin menghapus template ini?")) return;
+    const { error } = await supabaseClient.from("templates_ppt").delete().eq("id", id);
+    if (error) alert("❌ Gagal menghapus: " + error.message);
+    else loadTemplates(searchInput.value);
+  }
+
+  // === Event search ===
+  searchInput.addEventListener("input", e => {
+    const value = e.target.value.trim();
+    loadTemplates(value);
+  });
+
+  // === Load awal ===
+  loadTemplates();
+</script>
+
+</body>
+</html>

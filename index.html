@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desa Silanga — Website Jasa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'silanga-green': '#3BAF29',
+            'silanga-yellow': '#F2C94C'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Animasi Fade In -->
+  <style>
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease forwards;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-delay-1 { animation-delay: 0.3s; }
+    .fade-delay-2 { animation-delay: 0.6s; }
+    .fade-delay-3 { animation-delay: 0.9s; }
+  </style>
+</head>
+
+<body class="antialiased font-sans bg-gray-50">
+
+<!-- ✅ Navbar -->
+<header class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md shadow-sm z-50">
+  <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-[80px]">
+    <!-- Logo -->
+    <div class="flex items-center">
+      <img 
+        src="/asset/logo-navbar.png" 
+        alt="Logo Desa Silanga" 
+        class="h-[60px] w-auto object-contain cursor-pointer"
+        onclick="scrollToSection('hero')"
+      >
+    </div>
+
+    <!-- Menu Desktop -->
+    <nav class="hidden md:flex items-center gap-6 text-gray-700 font-medium">
+      <button onclick="scrollToSection('hero')" class="hover:text-silanga-green transition">Beranda</button>
+      <button onclick="scrollToSection('marketplace')" class="hover:text-silanga-green transition">Marketplace</button>
+      <button onclick="scrollToSection('downloadPPT')" class="hover:text-silanga-green transition">Template</button>
+      <button onclick="scrollToSection('about')" class="hover:text-silanga-green transition">About Us</button>
+    </nav>
+
+    <!-- Tombol Menu Mobile -->
+    <button id="menu-btn" class="md:hidden text-silanga-green text-3xl focus:outline-none">
+      ☰
+    </button>
+  </div>
+
+  <!-- Menu Mobile -->
+  <div id="mobile-menu" class="hidden flex-col bg-white text-gray-800 shadow-md md:hidden">
+    <button onclick="scrollToSection('hero')" class="px-6 py-3 border-b border-gray-200 hover:bg-gray-100 text-left">Beranda</button>
+    <button onclick="scrollToSection('marketplace')" class="px-6 py-3 border-b border-gray-200 hover:bg-gray-100 text-left">Marketplace</button>
+    <button onclick="scrollToSection('downloadPPT')" class="px-6 py-3 border-b border-gray-200 hover:bg-gray-100 text-left">Template</button>
+    <button onclick="scrollToSection('about')" class="px-6 py-3 hover:bg-gray-100 text-left">About Us</button>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn.addEventListener('click', () => {
+    menu.classList.toggle('hidden');
+  });
+
+  // Scroll halus ke section
+  function scrollToSection(id) {
+    const section = document.getElementById(id);
+    if (section) {
+      window.scrollTo({
+        top: section.offsetTop - 70,
+        behavior: 'smooth'
+      });
+      // Tutup menu mobile setelah klik
+      menu.classList.add('hidden');
+    }
+  }
+</script>
+
+  <!-- ✅ Hero Section -->
+<section id="hero" class="relative flex items-center justify-center h-[80vh] text-white pt-[80px] overflow-hidden">
+  <img src="/asset/gambar-hero.png" alt="Pemandangan Desa" class="absolute inset-0 w-full h-full object-cover opacity-80">
+  <div class="absolute inset-0 bg-gradient-to-r from-blue-600/80 to-cyan-400/60"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+    <h1 class="fade-in text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+      Temukan Template PPT Keren
+    </h1>
+    <p class="fade-in fade-delay-1 text-lg md:text-xl mb-6 text-blue-100">
+      Download gratis presentasi profesional bertema desa, pendidikan, dan lingkungan.
+    </p>
+    <button 
+      onclick="scrollToSection('downloadPPT')" 
+      class="fade-in fade-delay-2 inline-block bg-white text-silanga-green font-semibold px-8 py-3 rounded-lg shadow hover:opacity-90 transition">
+      Jelajahi Template
+    </button>
+  </div>
+</section>
+
+  <!-- ✅ SECTION OPEN ORDER -->
+<section id="marketplace" class="bg-gray-50 py-20">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+    <h2 class="fade-in text-3xl md:text-4xl font-bold text-silanga-green mb-4">
+      Open Order
+    </h2>
+    <p class="fade-in fade-delay-1 text-gray-600 mb-12">
+      Kami menyediakan berbagai layanan profesional untuk mendukung kebutuhan Anda.
+    </p>
+
+    <!-- 🧱 GRID CARD -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+
+      <!-- CARD 1: PDH & Almamater -->
+      <div class="fade-in fade-delay-2 bg-white rounded-2xl shadow-lg p-5 border border-gray-100 hover:shadow-2xl transition">
+        <div class="relative w-full mb-4 overflow-hidden rounded-xl">
+          <div class="flex transition-transform duration-700 ease-in-out" id="slider1">
+            <img src="/asset/produksi1.png" class="w-full h-48 object-cover" alt="">
+            <img src="/asset/produksi2.png" class="w-full h-48 object-cover" alt="">
+            <img src="/asset/produksi3.png" class="w-full h-48 object-cover" alt="">
+          </div>
+        </div>
+        <h3 class="text-lg md:text-xl font-semibold text-silanga-green mb-2">Pembuatan PDH, Almamater & Jaket</h3>
+        <p class="text-gray-600 text-xs md:text-sm leading-relaxed mb-4">Desain dan produksi PDH, almamater, serta jaket komunitas dengan kualitas terbaik.</p>
+        <button data-modal="modal1" class="openModalBtn w-full bg-silanga-green text-white px-5 py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-green-700 transition">Pesan Sekarang</button>
+      </div>
+
+      <!-- CARD 2: Template PPT -->
+      <div class="fade-in fade-delay-3 bg-white rounded-2xl shadow-lg p-5 border border-gray-100 hover:shadow-2xl transition">
+        <div class="relative w-full mb-4 overflow-hidden rounded-xl">
+          <div class="flex transition-transform duration-700 ease-in-out" id="slider2">
+            <img src="/asset/ppt1.png" class="w-full h-48 object-cover" alt="">
+            <img src="/asset/ppt2.png" class="w-full h-48 object-cover" alt="">
+          </div>
+        </div>
+        <h3 class="text-lg md:text-xl font-semibold text-silanga-green mb-2">Pembuatan Template PPT</h3>
+        <p class="text-gray-600 text-xs md:text-sm leading-relaxed mb-4">Pembuatan template PowerPoint profesional untuk skripsi, makalah, atau proposal.</p>
+        <button data-modal="modal2" class="openModalBtn w-full bg-silanga-green text-white px-5 py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-green-700 transition">Pesan Sekarang</button>
+      </div>
+
+      <!-- CARD 3: Edit Foto -->
+      <div class="fade-in fade-delay-2 bg-white rounded-2xl shadow-lg p-5 border border-gray-100 hover:shadow-2xl transition">
+        <div class="relative w-full mb-4 overflow-hidden rounded-xl">
+          <div class="flex transition-transform duration-700 ease-in-out" id="slider3">
+            <img src="/asset/edit1.png" class="w-full h-48 object-cover" alt="">
+            <img src="/asset/edit2.png" class="w-full h-48 object-cover" alt="">
+          </div>
+        </div>
+        <h3 class="text-lg md:text-xl font-semibold text-silanga-green mb-2">Edit Foto Profesional</h3>
+        <p class="text-gray-600 text-xs md:text-sm leading-relaxed mb-4">Layanan edit foto cepat: pas foto, restorasi foto lama, atau koreksi warna.</p>
+        <button data-modal="modal3" class="openModalBtn w-full bg-silanga-green text-white px-5 py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-green-700 transition">Pesan Sekarang</button>
+      </div>
+
+      <!-- CARD 4: Cek Plagiasi -->
+      <div class="fade-in fade-delay-3 bg-white rounded-2xl shadow-lg p-5 border border-gray-100 hover:shadow-2xl transition">
+        <div class="relative w-full mb-4 overflow-hidden rounded-xl">
+          <img src="/asset/plagiasi1.png" class="w-full h-48 object-cover rounded-lg" alt="">
+        </div>
+        <h3 class="text-lg md:text-xl font-semibold text-silanga-green mb-2">Cek Plagiasi by Turnitin</h3>
+        <p class="text-gray-600 text-xs md:text-sm leading-relaxed mb-4">Cek keaslian tulisan skripsi, proposal, atau makalah dengan sistem Turnitin resmi.</p>
+        <button data-modal="modal4" class="openModalBtn w-full bg-silanga-green text-white px-5 py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-green-700 transition">Pesan Sekarang</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ✅ SECTION DOWNLOAD PPT GRATIS (Versi 8 Card per Slide) -->
+<section id="downloadPPT" class="bg-white py-20 border-t border-gray-200">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="fade-in text-3xl md:text-4xl font-bold text-silanga-green mb-4 text-center">
+      Download Template PPT Gratis 🎨
+    </h2>
+    <p class="fade-in fade-delay-1 text-gray-600 text-center mb-12">
+      Temukan dan unduh template PowerPoint gratis dari berbagai tema universitas & kategori.
+    </p>
+
+    <!-- Filter & Search -->
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
+      <div class="relative">
+        <select id="themeFilter" class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-10 text-gray-700 focus:ring-2 focus:ring-silanga-green w-full md:w-64 cursor-pointer">
+          <option value="semua">🎨 Semua Tema</option>
+          <option value="pendidikan">📘 Pendidikan</option>
+          <option value="lingkungan">🌿 Lingkungan</option>
+          <option value="desa">🏡 Desa</option>
+          <option value="kampus">🎓 Kampus</option>
+          <option value="teknologi">💻 Teknologi</option>
+        </select>
+        <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-4">
+        <input id="searchCode" type="text" placeholder="Cari berdasarkan kode template..." class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-silanga-green w-full md:w-64">
+        <input id="searchUniv" type="text" placeholder="Cari berdasarkan universitas..." class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-silanga-green w-full md:w-64">
+      </div>
+    </div>
+
+    <!-- Container Slider -->
+    <div class="relative">
+      <!-- Tombol Navigasi -->
+      <button id="prevSlide" class="absolute -left-6 top-1/2 -translate-y-1/2 bg-silanga-green text-white rounded-full p-3 shadow hover:bg-green-700 z-10">
+        ‹
+      </button>
+      <button id="nextSlide" class="absolute -right-6 top-1/2 -translate-y-1/2 bg-silanga-green text-white rounded-full p-3 shadow hover:bg-green-700 z-10">
+        ›
+      </button>
+
+      <!-- Wrapper Slide -->
+      <div id="pptSlider" class="overflow-hidden">
+        <div id="pptTrack" class="flex transition-transform duration-700 ease-in-out">
+          <!-- Slide akan dimuat otomatis lewat JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🧠 SCRIPT SUPABASE & SLIDER -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://kfqjrvfdjehrjthbtkzs.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmcWpydmZkamVocmp0aGJ0a3pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2MDg3NzUsImV4cCI6MjA3NjE4NDc3NX0._94B2EbPFDsKtDn5egSEgwIwVZ3vaDMy-IEsAFyPOxU";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// 🎥 Default video tutorial untuk semua template
+const DEFAULT_TUTORIAL = "8EKW2yupnoY"; // Ganti ID ini dengan ID video tutorialmu
+
+const pptTrack = document.getElementById("pptTrack");
+let currentSlide = 0;
+let slides = [];
+
+// === Ambil Data dari Supabase ===
+async function loadTemplates() {
+  const { data, error } = await supabase.from("templates_ppt").select("*").order("created_at", { ascending: false });
+  if (error) return console.error("Gagal memuat data:", error);
+
+  // Bagi data jadi grup isi 8 per slide (4 atas, 4 bawah)
+  const grouped = [];
+  for (let i = 0; i < data.length; i += 8) {
+    grouped.push(data.slice(i, i + 8));
+  }
+
+  pptTrack.innerHTML = grouped.map(group => `
+    <div class="min-w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
+      ${group.map(t => `
+        <div class="ppt-card bg-gray-50 border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition p-4 fade-in"
+             data-theme="${t.theme.toLowerCase()}"
+             data-code="${t.code.toLowerCase()}"
+             data-univ="${t.univ.toLowerCase()}">
+          <div class="aspect-video rounded-lg overflow-hidden mb-3">
+            <iframe 
+              src="https://www.youtube.com/embed/${t.youtube_id}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=${t.youtube_id}"
+              class="w-full h-full rounded-lg"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <h3 class="text-lg font-semibold text-silanga-green mb-1">${t.title}</h3>
+          <p class="text-sm text-gray-500 mb-3">${t.univ} • Code: ${t.code}</p>
+          <button onclick="openDownloadModal('${t.download_link}')"
+                  class="block w-full bg-silanga-green text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition">
+            Download Sekarang
+          </button>
+        </div>
+      `).join("")}
+    </div>
+  `).join("");
+
+  slides = pptTrack.children;
+  updateSlider();
+}
+
+// === Navigasi Slider ===
+document.getElementById("prevSlide").addEventListener("click", () => {
+  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+  updateSlider();
+});
+document.getElementById("nextSlide").addEventListener("click", () => {
+  currentSlide = (currentSlide + 1) % slides.length;
+  updateSlider();
+});
+
+function updateSlider() {
+  pptTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+}
+
+// === Filter ===
+function filterPPT() {
+  const code = searchCode.value.toLowerCase();
+  const univ = searchUniv.value.toLowerCase();
+  const theme = themeFilter.value.toLowerCase();
+
+  document.querySelectorAll(".ppt-card").forEach(card => {
+    const match = (theme === "semua" || card.dataset.theme.includes(theme))
+      && card.dataset.code.includes(code)
+      && card.dataset.univ.includes(univ);
+    card.classList.toggle("hidden", !match);
+  });
+}
+["searchCode", "searchUniv", "themeFilter"].forEach(id =>
+  document.getElementById(id).addEventListener("input", filterPPT)
+);
+
+loadTemplates();
+</script>
+
+<!-- ✅ SECTION ABOUT US -->
+<section id="about" class="bg-gray-50 py-20 border-t border-gray-200">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold text-silanga-green mb-6 fade-in">
+      Tentang Kami 🌿
+    </h2>
+    <p class="text-gray-600 mb-10 fade-in fade-delay-1 max-w-3xl mx-auto">
+      <strong>Desa Silanga</strong> adalah platform kreatif berbasis komunitas yang menyediakan layanan desain 
+      dan template digital untuk mendukung kegiatan akademik, organisasi, serta pemberdayaan desa. 
+      Kami percaya bahwa kreativitas dapat menjadi motor penggerak perubahan positif, 
+      terutama di lingkungan pendidikan dan masyarakat.
+    </p>
+
+    <!-- Profil tim -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+      <!-- Anggota 1 -->
+      <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
+        <img src="/asset/team1.png" alt="Profil 1" class="w-28 h-28 mx-auto rounded-full object-cover mb-4">
+        <h3 class="text-lg font-semibold text-silanga-green mb-1">Biko</h3>
+        <p class="text-sm text-gray-500 mb-2">Founder & Web Developer</p>
+        <p class="text-sm text-gray-600">
+          Bertanggung jawab atas pengembangan website Desa Silanga dan integrasi Supabase.
+        </p>
+      </div>
+
+      <!-- Anggota 2 -->
+      <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
+        <img src="/asset/team2.png" alt="Profil 2" class="w-28 h-28 mx-auto rounded-full object-cover mb-4">
+        <h3 class="text-lg font-semibold text-silanga-green mb-1">Nanda</h3>
+        <p class="text-sm text-gray-500 mb-2">UI/UX Designer</p>
+        <p class="text-sm text-gray-600">
+          Mendesain antarmuka yang ramah pengguna dan memastikan pengalaman visual yang konsisten.
+        </p>
+      </div>
+
+      <!-- Anggota 3 -->
+      <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
+        <img src="/asset/team3.png" alt="Profil 3" class="w-28 h-28 mx-auto rounded-full object-cover mb-4">
+        <h3 class="text-lg font-semibold text-silanga-green mb-1">Rafi</h3>
+        <p class="text-sm text-gray-500 mb-2">Content & Social Media</p>
+        <p class="text-sm text-gray-600">
+          Mengelola konten media sosial dan menjaga komunikasi aktif dengan komunitas pengguna.
+        </p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-12">
+      <a href="https://wa.me/6285342977161" target="_blank"
+         class="inline-block bg-silanga-green text-white font-semibold px-8 py-3 rounded-lg shadow hover:bg-green-700 transition">
+        Hubungi Kami di WhatsApp 💬
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 🧩 MODAL DOWNLOAD (YANG AKTIF) - REPLACE THIS BLOCK -->
+<div id="downloadModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl shadow-xl w-[90%] max-w-lg p-6 relative text-center">
+    <button id="closeDownloadModal" class="absolute top-2 right-3 text-gray-500 text-xl hover:text-red-500">×</button>
+    <div id="tutorialVideo" class="aspect-video rounded-lg overflow-hidden mb-4"></div>
+
+    <!-- Iklan banner -->
+    <div class="flex justify-center mb-4">
+      <script type="text/javascript">
+        atOptions = {
+          'key': '032b4c92d03def7e13409eb620010a78',
+          'format': 'iframe',
+          'height': 50,
+          'width': 320,
+          'params': {}
+        };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/032b4c92d03def7e13409eb620010a78/invoke.js"></script>
+    </div>
+
+    <p id="countdown" class="text-gray-600 mb-3">Harap tunggu 10 detik...</p>
+    <a id="finalDownloadBtn" href="#" target="_blank"
+       class="hidden bg-silanga-green text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700 transition">
+      Download Sekarang
+    </a>
+
+    <p class="text-xs text-gray-500 mt-3">
+      Jika tombol download ini mengarah ke iklan (di tab baru), silakan kembali ke halaman ini lalu klik download lagi.
+    </p>
+  </div>
+</div>
+
+<script>
+let _countdownTimer = null;
+
+function openDownloadModal(link) {
+  const modal = document.getElementById("downloadModal");
+  const videoContainer = document.getElementById("tutorialVideo");
+  const countdownEl = document.getElementById("countdown");
+  const downloadBtn = document.getElementById("finalDownloadBtn");
+
+  if (_countdownTimer) {
+    clearInterval(_countdownTimer);
+    _countdownTimer = null;
+  }
+  downloadBtn.classList.add("hidden");
+  downloadBtn.removeAttribute("href");
+
+  modal.classList.remove("hidden");
+  videoContainer.innerHTML = `
+    <iframe 
+      src="https://www.youtube.com/embed/${DEFAULT_TUTORIAL}?autoplay=1&mute=1&controls=0&modestbranding=1"
+      class="w-full h-full" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+    </iframe>
+  `;
+
+  let timeLeft = 10;
+  countdownEl.textContent = `Harap tunggu ${timeLeft} detik...`;
+
+  _countdownTimer = setInterval(() => {
+    timeLeft--;
+    if (timeLeft > 0) {
+      countdownEl.textContent = `Harap tunggu ${timeLeft} detik...`;
+    } else {
+      clearInterval(_countdownTimer);
+      _countdownTimer = null;
+      countdownEl.textContent = "Klik tombol di bawah untuk mendownload.";
+      downloadBtn.href = link;
+      downloadBtn.classList.remove("hidden");
+
+      // 🟢 Pindahkan popunder ke event klik tombol download SAJA
+      downloadBtn.addEventListener("click", () => {
+        try {
+          const script = document.createElement("script");
+          script.src = "//pl27817772.effectivegatecpm.com/15/b8/85/15b8859bbf4f6dc813358deb9655fcc6.js";
+          script.async = true;
+          // simpan referensi agar bisa dihapus lagi nanti
+          script.onload = () => setTimeout(() => script.remove(), 5000);
+          document.body.appendChild(script);
+        } catch (err) {
+          console.warn("Gagal load popunder:", err);
+        }
+      }, { once: true });
+    }
+  }, 1000);
+}
+
+document.getElementById("closeDownloadModal").addEventListener("click", () => {
+  if (_countdownTimer) clearInterval(_countdownTimer);
+  document.getElementById("downloadModal").classList.add("hidden");
+  document.getElementById("tutorialVideo").innerHTML = "";
+  document.getElementById("finalDownloadBtn").classList.add("hidden");
+});
+window.openDownloadModal = openDownloadModal;
+</script>
+
+
+<!-- 🧩 MODAL TEMPLATE (4 VARIASI) -->
+<!-- MODAL 1 -->
+<div id="modal1" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl shadow-xl w-[90%] sm:w-[400px] p-6 relative">
+    <button class="closeModal absolute top-2 right-3 text-gray-500 text-xl hover:text-red-500">×</button>
+    <img src="/asset/pricelist1.png" class="w-full rounded-lg mb-4">
+    <h3 class="text-xl font-bold text-silanga-green mb-4 text-center">Form Pemesanan</h3>
+    <form class="waForm space-y-4" data-service="PDH & Almamater">
+      <input type="hidden" name="jenis" value="Pembuatan PDH & Almamater">
+      <div>
+        <label class="block text-gray-700 text-sm mb-1">Jumlah (pcs)</label>
+        <input type="number" min="1" name="jumlah" class="w-full border border-gray-300 rounded-lg p-2">
+      </div>
+      <button class="w-full bg-silanga-green text-white py-2 rounded-lg font-semibold hover:bg-green-700">Kirim via WhatsApp</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL 2 -->
+<div id="modal2" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl shadow-xl w-[90%] sm:w-[400px] p-6 relative">
+    <button class="closeModal absolute top-2 right-3 text-gray-500 text-xl hover:text-red-500">×</button>
+    <img src="/asset/ppt-price.png" class="w-full rounded-lg mb-4">
+    <h3 class="text-xl font-bold text-silanga-green mb-4 text-center">Form Pemesanan Template PPT</h3>
+    <form class="waForm space-y-4" data-service="Template PPT">
+      <div>
+        <label class="block text-gray-700 text-sm mb-1">Jenis Template</label>
+        <select name="jenis" class="w-full border border-gray-300 rounded-lg p-2">
+          <option value="Skripsi">Skripsi</option>
+          <option value="Proposal">Proposal Skripsi</option>
+          <option value="Makalah">Makalah</option>
+          <option value="Tugas">Tugas Kuliah</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-gray-700 text-sm mb-1">Tanggal & Jam Kebutuhan</label>
+        <input type="datetime-local" name="waktu" class="w-full border border-gray-300 rounded-lg p-2">
+      </div>
+      <button class="w-full bg-silanga-green text-white py-2 rounded-lg font-semibold hover:bg-green-700">Kirim via WhatsApp</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL 3 -->
+<div id="modal3" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl shadow-xl w-[90%] sm:w-[400px] p-6 relative">
+    <button class="closeModal absolute top-2 right-3 text-gray-500 text-xl hover:text-red-500">×</button>
+    <img src="/asset/edit-price.png" class="w-full rounded-lg mb-4">
+    <h3 class="text-xl font-bold text-silanga-green mb-4 text-center">Form Pemesanan Edit Foto</h3>
+    <form class="waForm space-y-4" data-service="Edit Foto">
+      <div>
+        <label class="block text-gray-700 text-sm mb-1">Jenis Edit</label>
+        <select name="jenis" class="w-full border border-gray-300 rounded-lg p-2">
+          <option value="Pas Foto">Pas Foto</option>
+          <option value="Restorasi">Restorasi Foto Lama</option>
+          <option value="Manipulasi">Manipulasi / Recolor</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-gray-700 text-sm mb-1">Tanggal & Jam Kebutuhan</label>
+        <input type="datetime-local" name="waktu" class="w-full border border-gray-300 rounded-lg p-2">
+      </div>
+      <button class="w-full bg-silanga-green text-white py-2 rounded-lg font-semibold hover:bg-green-700">Kirim via WhatsApp</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL 4 -->
+<div id="modal4" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl shadow-xl w-[90%] sm:w-[400px] p-6 relative">
+    <button class="closeModal absolute top-2 right-3 text-gray-500 text-xl hover:text-red-500">×</button>
+    <img src="/asset/plagiasi-price.png" class="w-full rounded-lg mb-4">
+    <h3 class="text-xl font-bold text-silanga-green mb-4 text-center">Form Cek Plagiasi Turnitin</h3>
+    <form class="waForm space-y-4" data-service="Cek Plagiasi">
+      <div>
+        <label class="block text-gray-700 text-sm mb-1">Jenis Dokumen</label>
+        <select name="jenis" class="w-full border border-gray-300 rounded-lg p-2">
+          <option value="Skripsi">Skripsi</option>
+          <option value="Proposal">Proposal Skripsi</option>
+          <option value="Makalah">Makalah</option>
+          <option value="Jurnal">Jurnal</option>
+        </select>
+      </div>
+      <button class="w-full bg-silanga-green text-white py-2 rounded-lg font-semibold hover:bg-green-700">Kirim via WhatsApp</button>
+    </form>
+  </div>
+</div>
+
+<script>
+/* === Auto-slide semua card === */
+function autoSlide(id) {
+  const slider = document.getElementById(id);
+  let index = 0;
+  const total = slider.children.length;
+  setInterval(() => {
+    index = (index + 1) % total;
+    slider.style.transform = `translateX(-${index * 100}%)`;
+  }, 4000);
+}
+['slider1','slider2','slider3'].forEach(autoSlide);
+
+/* === Modal toggle === */
+const modalButtons = document.querySelectorAll('.openModalBtn');
+const closeButtons = document.querySelectorAll('.closeModal');
+modalButtons.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.getElementById(btn.dataset.modal).classList.remove('hidden');
+  });
+});
+closeButtons.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    btn.closest('.fixed').classList.add('hidden');
+  });
+});
+
+/* === Kirim ke WhatsApp === */
+document.querySelectorAll('.waForm').forEach(form=>{
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const data = new FormData(form);
+    const service = form.dataset.service;
+    const nomorWA = '6285342977161';
+    let text = `Halo Min, saya ingin memesan layanan ${service}.%0A%0A`;
+    for (let [key,val] of data.entries()){
+      text += `🔹 ${key.charAt(0).toUpperCase()+key.slice(1)}: ${val}%0A`;
+    }
+    text += `%0ATerima kasih.`;
+    window.open(`https://wa.me/${nomorWA}?text=${text}`,'_blank');
+    form.closest('.fixed').classList.add('hidden');
+  });
+});
+</script>
+</body>
+</html>
